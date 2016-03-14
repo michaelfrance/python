@@ -21,21 +21,18 @@ trans_out = open('%s_protein.fasta' %(name),'w')
 
 
 for seq_record in SeqIO.parse(filepath, "fasta"):
+    if str(seq_record.seq).count("N") > 5:
+        continue
+    if len(seq_record.seq) < 25:
+        continue
+
     count += 1
 
     prot_id = ("%s_orf" %(name[:-3]) + str(count) )
 
 
     seq = seq_record.seq
-
-
-    if len(seq) < 25:
-
-        print len(seq)
-
-        continue
-
-    
+   
     protein = seq.translate(table="Bacterial")
 
 

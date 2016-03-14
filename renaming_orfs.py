@@ -2,6 +2,8 @@
 
 import sys
 import os
+from Bio import SeqIO
+
 
 #looping through text file with 1 genome filename per line
 

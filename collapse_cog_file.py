@@ -64,6 +64,8 @@ for line in fileinput.input(sys.argv[1]):
 
         clus_org_name = line.split()[2][1:]
 
+        print clus_org_name
+
         cluster_name = clus_org_name.split('_')[0][1:]
 
         org_name = clus_org_name.split('_')[1]
