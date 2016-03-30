@@ -55,7 +55,7 @@ for line in fileinput.input(sys.argv[1]):
     if size1 > size2:
         print "HERE"
         paralog = paralog + 1 
-    elif size2 == 28:
+    elif size2 == 40:
         print "HERE2"
         core = core + 1
         orf_seq = open('%s.fasta' % (orf),'w')
@@ -77,7 +77,7 @@ for line in fileinput.input(sys.argv[1]):
         new_filename = orf + '_fixed.fasta'
         alignment_name = orf + '_alignment.fasta'
 
-        cline = ClustalwCommandline("clustalw", infile=new_filename, output="fasta", outfile=alignment_name)
+        cline = ClustalwCommandline("clustalw2", infile=new_filename, output="fasta", outfile=alignment_name)
         cline()
 
         alignment = AlignIO.read(open(alignment_name), "fasta")
