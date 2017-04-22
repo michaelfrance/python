@@ -3,43 +3,41 @@ from Bio import SeqIO
 from Bio.Blast import NCBIWWW
 from Bio.Blast import NCBIXML
 import sys
-from Bio.Blast.Applications import NcbiblastpCommandline
-
-
-
 
 singles_out = open('singletons_blast_id.tsv','w')
-singles_out.write("ORF\tID1\tPercent\tID2\tPercent\tID3\tPercent\tID4\tPercent\tID5\tPercent ")
+singles_out.write("ORF\tID1\tID2\tID3\tID4\tID5 ")
+
 
 for rec in SeqIO.parse(open(sys.argv[1],"r"), "fasta") :
+    
     num_n = 0
+
     for i in rec:
         if i == 'X':
             num_n += 1
         if num_n > 5:
             continue
     length = len(rec.seq)
+    
     print length
     print rec.seq
 
-    fasta_out = open('fragment.fasta','w')
-    fasta_out.write('>fragment' + str(rec.id) + '\n' + str(rec.seq))
-
-    fasta_out.close()
-
     blastOUT = open('fragment.xml','w')
+
     # Set the counter to zero
     fail_count = 0
+    
     # Define the max we'll allow
     max_failures = 4
+
     # Track exceptions as we go
     exception_caught = False
  
     while fail_count < max_failures:
-        try:
-            blastp_cline = NcbiblastpCommandline(query="fragment.fasta", db="~/bioinformatics_tools/ncbi-blast/db/nr", outfmt=5, out="fragment.xml",num_threads=1,evalue=0.001,num_descriptions=10,num_alignments=10)
-            stdout, stderr = blastp_cline()
 
+        try:
+            Blast_r = NCBIWWW.qblast("blastp", "nr", rec.seq, hitlist_size=10)
+            blastOUT.write(Blast_r.read())
             # If we reach here an exception didn't occur
             exception_caught = False
     
@@ -58,23 +56,36 @@ for rec in SeqIO.parse(open(sys.argv[1],"r"), "fasta") :
             break
     
     result_handle = open("fragment.xml")
+
     blast_records = NCBIXML.parse(result_handle)
     
     counter = 0
+
     singles_out.write("\n" + str(rec.id) + "\t")
     
     for blast_record in blast_records:
+
         for alignment in blast_record.alignments:
+
 	    counter +=1
+
 	    if counter == 10:
+
 	        break
+
             for hsp in alignment.hsps:
                 #lacto_out.write(str(hsp.expect))
+
                 species_id = alignment.title
-                #print species_id
+
+                print species_id
+
                 print hsp.identities
+
                 per_ident = 100*int(hsp.identities)/length
+
                 species_id = species_id.split("|")[4]
+
                 singles_out.write(str(species_id) + "\t" + str(per_ident) + "\t")
     
 

@@ -8,7 +8,7 @@ import os
 
 file_list = os.listdir(".")
 
-fasta_out = open("ci_outgroups_DNA.fasta","w")
+fasta_out = open("joined_combined_all.fasta","w")
 
 for filename in file_list:
     for rec in SeqIO.parse(open(filename,"r"), "fasta"):

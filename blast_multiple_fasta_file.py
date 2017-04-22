@@ -3,6 +3,7 @@ from Bio import SeqIO
 from Bio.Blast import NCBIWWW
 from Bio.Blast import NCBIXML
 import sys
+import time
 
 singles_out = open('singletons_blast_id.tsv','w')
 singles_out.write("ORF\tID1\tID2\tID3\tID4\tID5 ")
@@ -21,6 +22,7 @@ for rec in SeqIO.parse(open(sys.argv[1],"r"), "fasta") :
     
     print length
     print rec.seq
+    time.sleep(5)
 
     blastOUT = open('fragment.xml','w')
 
@@ -28,7 +30,7 @@ for rec in SeqIO.parse(open(sys.argv[1],"r"), "fasta") :
     fail_count = 0
     
     # Define the max we'll allow
-    max_failures = 4
+    max_failures = 10
 
     # Track exceptions as we go
     exception_caught = False
@@ -69,7 +71,7 @@ for rec in SeqIO.parse(open(sys.argv[1],"r"), "fasta") :
 
 	    counter +=1
 
-	    if counter == 5:
+	    if counter == 10:
 
 	        break
 

@@ -16,11 +16,14 @@ def read_wo_first_column(fname, delimiter=None):
 all_input = np.loadtxt(read_wo_first_column(sys.argv[1]),skiprows=1,delimiter="   ")
 
 #trimming down the dataset to only include certain rows, 
-select = [3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
-all_input = all_input[select]
+select = [32,33,34,35,36,37,38,39,40,41,42,43,44,45,46]
+print select
 
+all_input = all_input[select,]
+for line in all_input:
+    print line
 #creating the output file
-core_out = open("crispatus_accumulations.csv","w")
+core_out = open("jensenii_accumulations.csv","w")
 #writing the column headings to the output file
 core_out.write("N,pan,pan_stderr,pan_lower,pan_upper,core,core_std.err,core_lower,core_upper,accessory,acc_stderr,acc_lower,acc_upper")
 
@@ -31,7 +34,7 @@ for n in range(1,16):
     accessory_all_reps = list()
     pan_all_reps = list()
     #looping through the number of replicates
-    for rep in range(0,100):
+    for rep in range(0,1000):
 
         #creating the randomly selected genomes to include
         genome_select = random.sample(range(0,15),n)
